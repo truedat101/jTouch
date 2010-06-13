@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<title>DEMO</title>
+	</head>
+	<body>
+		<article>
+      <h1>jTouch(prototype) ~ Sample</h1>
+      <p>
+        This is Gesture Library for MoblieSafari(iPad,iPhone,iPodTouch)<br />
+        Please gesure !
+		  </p>
+      <h2>How to use</h2>
+      <pre>
+jTouch.addTouchListener( element,{ 
+       callBack : function(e){
+         if( e.tGesture == jTouch.gesture.filp){
+           alert( "filp! (" + e.fingers+ " fingers)");
+         }
+         else if( e.tGesture == jTouch.gesture.swipe){
+           alert( "swipe! (" + e.fingers+ " fingers)");
+         }
+         else if( e.tGesture == jTouch.gesture.pinchIn){
+           alert( "pinch(in)!");
+         }
+         else if( e.tGesture == jTouch.gesture.pinchOut){
+           alert( "pinch(out)!");
+         }
+       },
+       moveCallBack : function( e){
+         e.preventDefault();
+       },
+       startCallBack : function( e){
+         e.preventDefault();
+       }
+});        
+      </pre>
+      <address>by yaakaito (www.yaakaito.org)</address>
+		</article>
+	</body>
+	<script type="text/javascript" src="./touchutil.js"></script>
+	<script>
+		jTouch.addTouchListener( document,
+                             { 
+                                 callBack : function(e){
+                                     if( e.tGesture == jTouch.gesture.filp){
+                                         alert( "filp! (" + e.fingers+ " fingers)");
+                                     }
+                                     else if( e.tGesture == jTouch.gesture.swipe){
+                                         alert( "swipe! (" + e.fingers+ " fingers)");
+                                     }
+                                     else if( e.tGesture == jTouch.gesture.pinchIn){
+                                         alert( "pinch(in)!");
+                                     }
+                                     else if( e.tGesture == jTouch.gesture.pinchOut){
+                                         alert( "pinch(out)!");
+                                     }
+                                 },
+                                 moveCallBack : function( e){
+                                     e.preventDefault();
+                                 },
+                                 startCallBack : function( e){
+                                     e.preventDefault();
+                                 }
+                             });
+	</script>
+</html>
