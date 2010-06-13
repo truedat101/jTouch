@@ -225,8 +225,8 @@ jTouch.calcPinch = function( ary){
     
     if( state !== jTouch.gesture.unknown){
         
-        if( Math.abs( ary[1][0].x - ary[ary.length-1][0].x) > copy[copy.length-1] ||
-        Math.abs( ary[1][0].y - ary[ary.length-1][0].y) > copy[copy.length-1]){
+        if( Math.abs( ary[1][0].x - ary[ary.length-1][0].x) > copy[copy.length-1]*1.2 ||
+        Math.abs( ary[1][0].y - ary[ary.length-1][0].y) > copy[copy.length-1]*1.2){
             state = jTouch.gesture.unknown;
         }
 
