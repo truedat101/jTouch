@@ -14,7 +14,13 @@
       <pre>
 jTouch.addTouchListener( element,{ 
        callBack : function(e){
-         if( e.tGesture == jTouch.gesture.filp){
+         if( e.tripleTouch){
+           //triple touch
+         }
+         else if( e.doubleTouch){
+           //double touch
+         }                       
+         else if( e.tGesture == jTouch.gesture.filp){
            alert( "filp! (" + e.fingers+ " fingers)");
          }
          else if( e.tGesture == jTouch.gesture.swipe){
