@@ -35,6 +35,7 @@ jTouch.addTouchListener( element,{
        }
 });        
       </pre>
+      <div id="write"></div>
       <address>by yaakaito (www.yaakaito.org)</address>
 		</article>
 	</body>
@@ -43,7 +44,14 @@ jTouch.addTouchListener( element,{
 		jTouch.addTouchListener( document,
                              { 
                                  callBack : function(e){
-                                     if( e.tGesture == jTouch.gesture.filp){
+                                     
+                                     if( e.tripleTouch){
+                                         document.getElementById("write").innerHTML += "triple/";
+                                     }
+                                     else if( e.doubleTouch){
+                                         document.getElementById("write").innerHTML += "double/";
+                                     }
+                                     else if( e.tGesture == jTouch.gesture.filp){
                                          alert( "filp! (" + e.fingers+ " fingers)");
                                      }
                                      else if( e.tGesture == jTouch.gesture.swipe){

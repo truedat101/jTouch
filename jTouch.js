@@ -20,13 +20,14 @@ var jTouch = {
         fingers     : 0,
         distance    : 0,
         vector      : 0,
-        gesture      : 0,
-        doubleTouch : false,
-        tripleTouch : false
+        gesture     : 0,
+        touchCount  : 0
+        //   doubleTouch : false,
+        //   tripleTouch : false
     },
 
     calc : {
-        touchesInterval : 1,
+        touchesInterval : 300,
         filpInterval    : 500,
         filpSize        : 30,
         swipeSize       : 100,
@@ -34,13 +35,13 @@ var jTouch = {
         isFlip          : false,
         flipBias        : 30,
         fingers         : 0,
-        step    : [],
+        step            : [],
         weight          : 15
     },
     thread : {
       
         flip : null,
-        touches : null
+        touch : null
     },
 
     Touches : {},
@@ -57,7 +58,7 @@ jTouch.addTouchListener = function( element, options){
                                   jTouch.calc.step.push( item);
                                   //FlipTimer
                                   jTouch.calc.isFlip = true;
-                                  jTouch.thread.flip = setInterval( function(){
+                                  jTouch.thread.flip = setTimeout( function(){
                                                     jTouch.calc.isFlip = false;
                                                }, jTouch.calc.filpInterval);
 
@@ -85,22 +86,11 @@ jTouch.addTouchListener = function( element, options){
 
     element.addEventListener( "touchend",
                               function( e){
-                                  //DoubleTouch, TripleTouch
-                                  if( jTouch.calc.isLabor){
-                                      if( jTouch.status.doubleTouch){
-                                          jTouch.status.tripleTouch = true;
-                                      }
-                                      jTouch.status.doubleTouch = true;
-                                  }
-
-
-                                  //Labor Status
-                                  clearTimeout( jTouch.thread.touches);
-                                  jTouch.calc.isLabor = true;
-                                  jTouch.thread.touches = setInterval( jTouch.calc.touchesInterval, function(){
-                                                   jTouch.calc.isLabor = false; 
-                                               });        
-                                  
+                                  jTouch.status.touchCount++;
+                                  clearTimeout( jTouch.thread.touch);
+                                  jTouch.thread.touch = setTimeout( function(){
+                                                   jTouch.status.touchCount = 0;
+                                               }, jTouch.calc.touchesInterval);
                                   var gesture_ = jTouch.getGesture();
                                   
                                   clearTimeout( jTouch.thread.filp);
@@ -112,8 +102,8 @@ jTouch.addTouchListener = function( element, options){
                                       e.step = jTouch.calc.step;
                                       e.tGesture = gesture_.gesture;
                                       e.tVecotr = gesture_.vector;
-                                      e.doubleTouch = jTouch.status.doubleTouch;
-                                      e.tripleTouch = jTouch.status.tripleTouch;
+                                      e.doubleTouch = (jTouch.status.touchCount == 2);
+                                      e.tripleTouch = (jTouch.status.touchCount == 3);
                                       
                                       options.callBack(e);
                                   }
@@ -121,6 +111,7 @@ jTouch.addTouchListener = function( element, options){
                                   //clear
                                   jTouch.calc.step = [];
                                   jTouch.calc.isFlip = false;
+
                               });
 };
 
@@ -142,20 +133,30 @@ jTouch.getGesture = function(){
 
     //is Filp? 
     if( jTouch.calc.isFlip){
-        var gesture_ = { gesture : jTouch.gesture.filp};
         if( x < -jTouch.calc.filpSize){
-            gesture_.vector = jTouch.vector.left;
+            return {
+                vector : jTouch.vector.left ,
+                gesture : jTouch.gesture.filp
+            };
         }else if( x > jTouch.calc.filpSize){
-            gesture_.vector = jTouch.vector.right;
+            return {
+                vector : jTouch.vector.right ,
+                gesture : jTouch.gesture.filp
+            };
+
         }else if( y > jTouch.calc.filpSize){
-            gesture_.vector = jTouch.vector.down;
+            return {
+                vector : jTouch.vector.down ,
+                gesture : jTouch.gesture.filp
+            };
+
         }else if( y < -jTouch.calc.filpSize){
-            gesture_.vector = jTouch.vector.up;
-        }else{
-            gesture_.vector = jTouch.vector.unknown;
+            return {
+                vector : jTouch.vector.top ,
+                gesture : jTouch.gesture.filp
+            };
+
         }
-        
-        return gesture_;
     }
 
     //is Swipe?
